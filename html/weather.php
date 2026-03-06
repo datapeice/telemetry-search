@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>datapeice SYSTEMS&amp;CLOUDS — Pogoda Enterprise</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>datapeice SYSTEMS&amp;CLOUDS — Pogoda Enterprise</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #080a0f; color: #cdd1da; margin: 0; }
         header { background: #000; border-bottom: 1px solid #222; padding: 0 48px;

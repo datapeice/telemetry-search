@@ -1,0 +1,102 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#fff;font-family:'IBM Plex Mono',monospace;overflow:hidden;height:100vh;width:100vw}
+/* Shift canvas right edge based on panel width so they don't overlap */
+#canvas-container{position:fixed;top:0;left:0;bottom:0;right:300px;z-index:0;transition:right .25s ease;background:#0a0a0a}
+#canvas-container.full{right:0}
+
+/* topbar */
+#topbar{position:fixed;top:0;left:0;right:0;height:48px;background:rgba(10,10,10,.92);border-bottom:1px solid #111;backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:50}
+.tb-left{display:flex;align-items:center;gap:20px}
+.tb-brand{font-size:12px;font-weight:600;letter-spacing:.08em;color:#fff;text-transform:uppercase}
+.tb-brand em{color:#8a9ba8;font-style:normal;text-transform:lowercase}
+.tb-sep{width:1px;height:20px;background:#1a1a1a}
+.tb-status{font-size:10px;color:#3d5a66;letter-spacing:.06em;text-transform:uppercase}
+.tb-status .dot{display:inline-block;width:6px;height:6px;background:#4a8f6a;border-radius:50%;margin-right:6px;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.tb-count{font-size:10px;color:#3d5a66;letter-spacing:.06em}
+.tb-count strong{color:#8a9ba8}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid #1a1a1a;color:#555;padding:5px 14px;cursor:pointer;text-decoration:none;transition:color .15s,border-color .15s;display:inline-flex;align-items:center;gap:6px}
+.tb-btn:hover{color:#fff;border-color:#444}
+
+/* panel */
+#panel{position:fixed;top:48px;right:0;bottom:0;width:300px;background:#050709;border-left:1px solid #111;display:flex;flex-direction:column;z-index:40;transition:transform .25s ease}
+#panel.hidden{transform:translateX(300px)}
+.panel-header{padding:12px 14px 10px;border-bottom:1px solid #0f0f0f}
+.panel-title{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#2a4050;margin-bottom:8px}
+.panel-search{display:flex;background:#070a0d;border:1px solid #111}
+.panel-search input{flex:1;background:transparent;border:none;outline:none;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#aaa;padding:6px 10px;letter-spacing:.03em}
+.panel-list{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#111 transparent}
+.query-item{padding:9px 14px;border-bottom:1px solid #080808;cursor:pointer;transition:background .1s}
+.query-item:hover{background:#070a0d}
+.query-item.active{background:#0a1520;border-left:2px solid #8a9ba8;padding-left:12px}
+.qi-query{font-size:12px;color:#bbb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.qi-meta{font-size:10px;color:#222;display:flex;gap:10px}
+.qi-meta .loc{color:#2d4555}
+.panel-empty{padding:32px 14px;font-size:10px;color:#1a1a1a;text-align:center;letter-spacing:.06em;text-transform:uppercase;line-height:2}
+
+/* tooltip */
+#tooltip{position:fixed;display:none;background:rgba(5,7,9,.97);border:1px solid #111;border-left:2px solid #8a9ba8;padding:12px 16px;pointer-events:none;z-index:60;width:320px}
+.tt-loc{font-size:13px;color:#fff;font-weight:500;margin-bottom:4px;letter-spacing:.02em}
+.tt-ip{font-size:10px;color:#3d5a66;margin-bottom:8px;}
+.tt-queries{margin-top:8px;max-height:150px;overflow:hidden;border-top:1px solid #111;padding-top:8px;display:flex;flex-direction:column;gap:6px;}
+.tt-q-item{font-size:11px;color:#aaa;display:flex;justify-content:space-between;align-items:center}
+.tt-q-item span.time{font-size:9px;color:#555;}
+.tt-q-item div.q{width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tt-ua{font-size:10px;color:#1e2a2a;margin-top:8px;word-break:break-all;line-height:1.6;border-top:1px solid #0d0d0d;padding-top:7px}
+
+/* lock indicator */
+#lock-indicator{position:fixed;bottom:28px;left:calc(50% - 150px);transform:translateX(-50%);background:rgba(0,0,0,.85);border:1px solid #1a2a3a;font-size:10px;color:#3d5a66;letter-spacing:.12em;text-transform:uppercase;padding:7px 20px;z-index:20;display:none;cursor:pointer;transition:color .15s}
+#lock-indicator:hover{color:#8a9ba8}
+#lock-indicator.visible{display:block}
+
+/* loading */
+#loading{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0a0a0a;z-index:200;gap:14px;font-size:10px;color:#1a2530;letter-spacing:.2em;text-transform:uppercase}
+.load-bar{width:180px;height:1px;background:#0d0d0d;position:relative;overflow:hidden}
+.load-bar::after{content:'';position:absolute;left:-40%;top:0;bottom:0;width:40%;background:linear-gradient(90deg,transparent,#8a9ba8,transparent);animation:sweep 1.2s ease-in-out infinite}
+@keyframes sweep{to{left:100%}}
+
+#toggle-panel{position:fixed;top:58px;right:300px;z-index:45;background:rgba(0,0,0,.8);border:1px solid #111;border-right:none;color:#222;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 9px;cursor:pointer;transition:color .15s}
+#toggle-panel.ph{right:0;border-right:1px solid #111;border-left:none}
+#toggle-panel:hover{color:#666}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  #canvas-container { right: 0; }
+  #canvas-container.shifted { bottom: 300px; right: 0; }
+  
+  #topbar { 
+    flex-direction: column; 
+    height: auto; 
+    padding: 12px 16px; 
+    gap: 12px; 
+  }
+  .tb-left { 
+    flex-direction: column; 
+    width: 100%; 
+    gap: 6px; 
+  }
+  .tb-right { 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    gap: 12px; 
+    border-top: 1px solid #1a1a1a; 
+    padding-top: 12px; 
+  }
+  .tb-btn { 
+    flex: 1; 
+    justify-content: center; 
+    padding: 8px 0; 
+  }
+  .tb-sep { display: none; }
+  
+  #panel { width: 100%; top: auto; right: 0; bottom: 0; height: 300px; transform: translateY(300px); border-left: none; border-top: 1px solid #111; }
+  #panel.hidden { transform: translateY(300px); }
+  #panel.open { transform: translateY(0); }
+  
+  #toggle-panel { top: auto; bottom: 300px; right: 20px; font-size: 16px; padding: 10px 14px; border: 1px solid #111; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+  #toggle-panel.ph { bottom: 20px; }
+  
+  #tooltip { width: 90vw; left: 5vw !important; bottom: 20px; top: auto !important; position: fixed; transform: none !important; margin: 0; padding: 10px; }
+}

@@ -3,513 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>datapeice SYSTEMS&CLOUDS — Enterprise Search Platform v9.1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg:      #000000;
-    --surface: #0a0a0a;
-    --surface2:#111111;
-    --border:  #222222;
-    --border2: #333333;
-    --text:    #ffffff;
-    --muted:   #666666;
-    --dim:     #444444;
-    --accent:  #ffffff;
-    --accent:  #8a9ba8;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 14px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    line-height: 1.6;
-  }
-
-  /* ── Header ── */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 0 48px;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: rgba(0,0,0,.92);
-    backdrop-filter: blur(12px);
-    z-index: 100;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .brand-name {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: var(--text);
-  }
-  .brand-name em { color: var(--accent); font-style: normal; }
-  .brand-ver {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    border: 1px solid var(--border2);
-    padding: 2px 6px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-  nav {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-  }
-  nav a {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color .15s;
-  }
-  nav a:hover { color: var(--text); }
-  nav a.active { color: var(--text); }
-  .nav-license {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--accent) !important;
-    border: 1px solid var(--accent);
-    padding: 4px 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: background .15s !important;
-  }
-  .nav-license:hover { background: var(--accent) !important; color: #000 !important; }
-
-  /* ── Hero ── */
-  .hero {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 24px 60px;
-  }
-
-  .system-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .system-tag::before,
-  .system-tag::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--border2);
-  }
-
-  h1 {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: clamp(36px, 7vw, 80px);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 0.95;
-    text-align: center;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-  h1 .accent { color: var(--accent); }
-
-  .subtitle {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-align: center;
-    margin-top: 16px;
-    margin-bottom: 52px;
-  }
-
-  /* ── Search ── */
-  .search-wrap { width: 100%; max-width: 720px; }
-
-  .search-box {
-    display: flex;
-    border: 1px solid var(--border2);
-    background: var(--surface);
-    transition: border-color .2s;
-  }
-  .search-box:focus-within {
-    border-color: var(--text);
-  }
-  .search-box input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 15px;
-    color: var(--text);
-    padding: 16px 20px;
-    letter-spacing: 0.02em;
-  }
-  .search-box input::placeholder {
-    color: var(--dim);
-    font-weight: 300;
-  }
-  .btn-search {
-    background: var(--text);
-    color: var(--bg);
-    border: none;
-    padding: 0 28px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background .15s;
-    white-space: nowrap;
-  }
-  .btn-search:hover { background: #e0e0e0; }
-  .btn-lucky {
-    background: transparent;
-    color: var(--muted);
-    border: none;
-    border-left: 1px solid var(--border2);
-    padding: 0 20px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: color .15s, background .15s;
-    white-space: nowrap;
-  }
-  .btn-lucky:hover { color: var(--text); background: var(--surface2); }
-
-  .search-meta {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    padding: 0 2px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-  .search-meta a { color: var(--muted); text-decoration: none; }
-  .search-meta a:hover { color: var(--text); }
-
-  /* ── License notice ── */
-  .license-notice {
-    width: 100%;
-    max-width: 720px;
-    margin-top: 24px;
-    border: 1px solid #1e2535;
-    background: #0d0f12;
-    padding: 14px 20px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-  .license-notice .ln-icon {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-    padding-top: 1px;
-  }
-  .license-notice p {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: #556270;
-    line-height: 1.7;
-    letter-spacing: 0.02em;
-  }
-  .license-notice strong { color: var(--accent); font-weight: 500; }
-  .license-notice a { color: var(--accent); text-decoration: none; }
-  .license-notice a:hover { text-decoration: underline; }
-
-  /* ── Spinner ── */
-  .spinner {
-    display: none;
-    width: 20px; height: 20px;
-    border: 1px solid var(--border2);
-    border-top-color: var(--text);
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-    margin: 32px auto;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── Results ── */
-  #results {
-    width: 100%;
-    max-width: 720px;
-    margin-top: 28px;
-    display: none;
-  }
-  .results-header {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .results-header a {
-    color: var(--accent);
-    font-size: 10px;
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .results-header a:hover { text-decoration: underline; }
-
-  .result-item {
-    border-bottom: 1px solid var(--border);
-    padding: 18px 0;
-  }
-  .result-item:last-child { border-bottom: none; }
-  .ri-title {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 4px;
-    letter-spacing: -0.01em;
-  }
-  .ri-url {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--dim);
-    margin-bottom: 8px;
-    letter-spacing: 0.02em;
-  }
-  .ri-snippet {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.7;
-    letter-spacing: 0.02em;
-  }
-  .ri-real {
-    margin-top: 10px;
-  }
-  .ri-real a {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-decoration: none;
-    border: 1px solid var(--border2);
-    padding: 4px 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color .15s, border-color .15s;
-  }
-  .ri-real a:hover { color: var(--text); border-color: var(--text); }
-
-  /* ── Footer ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 16px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-  footer a { color: var(--muted); text-decoration: none; }
-  footer a:hover { color: var(--text); }
-
-  /* ── License Modal ── */
-  .modal-bg {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.85);
-    backdrop-filter: blur(8px);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-bg.open { display: flex; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    padding: 48px;
-    max-width: 480px;
-    width: 90%;
-    position: relative;
-  }
-  .modal-close {
-    position: absolute;
-    top: 20px; right: 24px;
-    background: none;
-    border: none;
-    color: var(--dim);
-    font-size: 18px;
-    cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .modal-close:hover { color: var(--text); }
-  .modal-header {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 20px;
-  }
-  .modal h2 {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .modal .modal-sub {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 28px;
-    letter-spacing: 0.03em;
-  }
-  .modal p {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.8;
-    margin-bottom: 24px;
-    letter-spacing: 0.02em;
-  }
-  .modal .price-table {
-    border: 1px solid var(--border);
-    margin-bottom: 28px;
-  }
-  .price-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .price-row:last-child { border-bottom: none; }
-  .price-row .price { color: var(--accent); font-weight: 500; }
-  .btn-buy {
-    width: 100%;
-    padding: 14px;
-    background: var(--text);
-    color: var(--bg);
-    border: none;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background .15s;
-  }
-  .btn-buy:hover { background: #ddd; }
-  .modal-note {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 14px;
-    letter-spacing: 0.03em;
-    line-height: 1.8;
-  }
-  
-  /* ── Mobile Responsive ── */
-  @media (max-width: 768px) {
-    header {
-      flex-direction: column;
-      height: auto;
-      padding: 16px;
-      gap: 12px;
-    }
-    .brand {
-      justify-content: center;
-      text-align: center;
-      flex-wrap: wrap;
-    }
-    nav {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-    }
-    .hero {
-      padding: 40px 16px 30px;
-    }
-    .search-box {
-      flex-direction: column;
-    }
-    .search-box input {
-      width: 100%;
-      padding: 16px;
-      border-bottom: 1px solid var(--border2);
-    }
-    .search-box button.btn-search,
-    .search-box button.btn-lucky {
-      width: 100%;
-      padding: 16px;
-      border-left: none;
-      border-bottom: 1px solid var(--border2);
-    }
-    .search-meta {
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      text-align: center;
-    }
-    .license-notice {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    footer {
-      flex-direction: column;
-      padding: 16px;
-      gap: 12px;
-      text-align: center;
-    }
-    .modal {
-      padding: 24px 16px;
-    }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -539,6 +37,7 @@
 
 <header>
   <div class="brand">
+    <img src="favicon.svg" alt="logo" style="height: 26px; width: 26px; filter: drop-shadow(0 0 4px rgba(255,255,255,0.2));">
     <span class="brand-name"><em>datapeice</em> SYSTEMS&amp;CLOUDS</span>
     <span class="brand-ver">Enterprise v9.1</span>
   </div>
@@ -599,9 +98,141 @@
     if (e.target === this) closeLicenseModal();
   });
 
+  let audioInstance = null;
+  let easterEggActive = false;
+
+  const israelTriggers = [
+    // English
+    'israel', 'tel aviv', 'jerusalem', 'zion', 'zionism', 'idf', 'mossad', 'shalom', 'hebrew', 'knesset', 'haifa', 'judaism',
+    // Russian
+    'израиль', 'тель-авив', 'тель авив', 'иерусалим', 'сион', 'сионизм', 'цахал', 'моссад', 'шалом', 'иврит', 'кнессет', 'хайфа', 'иудаизм',
+    // Polish
+    'izrael', 'tel awiw', 'jerozolima', 'syjon', 'syjonizm', 'cahal', 'mosad', 'szalom', 'hebrajski', 'kneset', 'hajfa', 'judaizm', 'żydzi', 'żyd', 'żydowskie'
+  ];
+
+  function checkEasterEggs(q) {
+    if (israelTriggers.some(t => q.toLowerCase().includes(t)) && !easterEggActive) {
+      easterEggActive = true;
+      if (audioInstance) {
+        audioInstance.pause();
+        audioInstance.currentTime = 0;
+      }
+      audioInstance = new Audio('israel.mp3');
+      audioInstance.volume = 1.0;
+      
+      const img = document.createElement('img');
+      img.src = 'israel_img.png';
+      img.style.position = 'fixed';
+      img.style.bottom = '0px';
+      img.style.right = '40px';
+      img.style.width = 'clamp(180px, 50vw, 450px)';
+      img.style.zIndex = '9998';
+      img.style.borderRadius = '12px';
+      img.style.opacity = '0';
+      img.style.transform = 'translateY(100px)';
+      img.style.transition = 'opacity 1s, transform 1s';
+      img.style.cursor = 'pointer';
+      document.body.appendChild(img);
+      
+      const size = window.innerWidth <= 768 ? 60 : 100;
+      const starSvgContent = `<path d="M 47.631413,492.11477 552.36859,492.11491 300,54.999953 Z M 300,637.81981 552.36851,200.70493 47.631403,200.70481 Z" fill="none" stroke="#00f" stroke-width="55"/>`;
+      
+      const bgStar = document.createElement('div');
+      bgStar.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 600 692.82" preserveAspectRatio="xMidYMid meet">${starSvgContent}</svg>`;
+      bgStar.style.position = 'fixed';
+      bgStar.style.bottom = 'clamp(100px, 20vw, 180px)';
+      bgStar.style.right = 'clamp(80px, 25vw, 200px)';
+      bgStar.style.width = 'clamp(130px, 30vw, 260px)';
+      bgStar.style.height = 'clamp(130px, 30vw, 260px)';
+      bgStar.style.zIndex = '9997';
+      bgStar.style.opacity = '0';
+      bgStar.style.transform = 'translateY(100px)';
+      bgStar.style.transition = 'opacity 1s, transform 1s';
+      bgStar.style.pointerEvents = 'none';
+      bgStar.style.filter = 'drop-shadow(0 0 30px rgba(0, 0, 255, 0.6))';
+      document.body.appendChild(bgStar);
+
+      const star = document.createElement('div');
+      // Classic flag of Israel star (hexagram) outline
+      star.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 600 692.82">${starSvgContent}</svg>`;
+      star.style.position = 'fixed';
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.zIndex = '9999';
+      star.style.pointerEvents = 'none';
+      star.style.filter = 'drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 20px rgba(0, 56, 184, 0.6))';
+      document.body.appendChild(star);
+      
+      let posX = Math.random() * (window.innerWidth - size);
+      let posY = Math.random() * (window.innerHeight - size);
+      let speedX = (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 3);
+      let speedY = (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 3);
+      let rot = 0;
+      let animating = true;
+      
+      audioInstance.play().catch(e => console.log('Audio blocked:', e));
+      
+      setTimeout(() => {
+        img.style.opacity = '1';
+        img.style.transform = 'translateY(0)';
+        bgStar.style.opacity = '0.4';
+        bgStar.style.transform = 'translateY(0)';
+      }, 100);
+      
+      function animate() {
+        if (!animating) return;
+        posX += speedX;
+        posY += speedY;
+        rot += 1.5;
+        
+        if (posX <= 0 || posX >= window.innerWidth - size) speedX *= -1;
+        if (posY <= 0 || posY >= window.innerHeight - size) speedY *= -1;
+        
+        star.style.left = posX + 'px';
+        star.style.top = posY + 'px';
+        star.style.transform = `rotate(${rot}deg)`;
+        
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+      
+      let stopped = false;
+      const stopEgg = () => {
+        if (stopped) return;
+        stopped = true;
+        animating = false;
+        img.style.opacity = '0';
+        img.style.transform = 'translateY(100px)';
+        star.style.opacity = '0';
+        bgStar.style.opacity = '0';
+        bgStar.style.transform = 'translateY(100px)';
+        star.style.transition = 'opacity 1s';
+        setTimeout(() => {
+          if (img.parentNode) img.remove();
+          if (star.parentNode) star.remove();
+          if (bgStar.parentNode) bgStar.remove();
+          easterEggActive = false;
+        }, 1000);
+      };
+
+      audioInstance.onended = stopEgg;
+      audioInstance.ontimeupdate = () => {
+        if (audioInstance.duration && audioInstance.currentTime >= audioInstance.duration - 10) {
+          stopEgg();
+        }
+      };
+      img.onclick = () => {
+         audioInstance.pause();
+         stopEgg();
+      };
+    }
+  }
+
   async function doSearch() {
     const q = input.value.trim();
     if (!q) { openLicenseModal(); return; }
+
+    checkEasterEggs(q);
 
     const spinner = document.getElementById('spinner');
     const results = document.getElementById('results');
