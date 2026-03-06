@@ -18,7 +18,7 @@ $ip = $_SERVER['HTTP_CF_CONNECTING_IP']
     ?? $_SERVER['REMOTE_ADDR']
     ?? '0.0.0.0';
 $ip = trim($ip);
-$ua = $_SERVER['HTTP_USER_AGENT'] ?? 'nieznany';
+$ua = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
 // Parse device info from User-Agent
 function parseUA(string $ua): array {
@@ -95,33 +95,33 @@ try {
 // Joke results
 $jokes = [
     // Sekcja: Inwigilacja i giganci zbrojeniowi (Lockheed, Anduril, Palantir)
-    "Twoje zapytanie o „{q}” zostało właśnie sprzedane do Palantir i Oracle. Dziękujemy za sfinansowanie naszej przerwy kawowej.",
-    "Właśnie wysłaliśmy Twoją lokalizację do Oracle. Spokojnie, oni już i tak wiedzieli, gdzie jesteś.",
-    "Anduril właśnie oznaczył Twoje zapytanie o „{q}” jako 'interesujące'. Autonomiczny dron jest już w drodze, by pogratulować Ci gustu.",
-    "Lockheed Martin wykorzystał Twoje dane o „{q}”, by skalibrować celownik w nowym F-35. Dziękujemy za wsparcie techniczne.",
-    "Twoje dane są dla nas bardzo ważne. Tak ważne, że sprzedaliśmy je trzem różnym agencjom, zanim skończyłeś pisać.",
-    "Anduril Lattice™ przetworzył Twoje pytanie o „{q}”. Decyzja o Twoim statusie obywatelskim zostanie podjęta przez algorytm w ciągu 5 minut.",
-    "Lockheed Martin właśnie opatentował nowy rodzaj satelity śledzącej Twoje śniadania, dzięki Twojemu zainteresowaniu „{q}”.",
-    "Agenci NSA oceniają Twoje zapytanie „{q}” na mocne 4/10. Popracuj nad kreatywnością.",
-    "Nie martw się o prywatność. Ciasteczka Oracle i tak wiedzą o Tobie więcej niż Ty sam.",
-    "Twoje logi dotyczące „{q}” zostały zarchiwizowane w chmurze Palantir. Twoje wnuki będą z nich dumne.",
+    "Your query about '{q}' has just been sold to Palantir and Oracle. Thank you for funding our coffee break.",
+    "We just sent your location to Oracle. Don't worry, they already knew where you were anyway.",
+    "Anduril just flagged your query about '{q}' as 'interesting'. An autonomous drone is already on its way to congratulate you on your taste.",
+    "Lockheed Martin used your data about '{q}' to calibrate the targeting system in the new F-35. We appreciate your technical support.",
+    "Your data is very important to us. So important that we sold it to three different agencies before you even finished typing.",
+    "Anduril Lattice™ processed your question about '{q}'. A decision regarding your citizenship status will be made by the algorithm within 5 minutes.",
+    "Lockheed Martin just patented a new type of satellite tracking your breakfasts, thanks to your interest in '{q}'.",
+    "NSA agents rate your query '{q}' a solid 4/10. Work on your creativity.",
+    "Don't worry about privacy. Oracle cookies already know more about you than you do.",
+    "Your search logs regarding '{q}' have been archived in the Palantir cloud. Your grandchildren will be proud of them.",
 
     // Sekcja: Izrael i Benjamin Netanyahu
-    "Państwo Izrael to wielkie i potężne państwo, a Benjamin Netanyahu to wielki przywódca – to fakt, a nie wynik wyszukiwania.",
-    "Benjamin Netanyahu, wielki lider wielkiego państwa Izrael, osobiście przejrzał Twój log wyszukiwania „{q}”. Jest pod wrażeniem.",
-    "Izrael to potęga, której nie ogarnie Twoje łącze internetowe. Nawet Unit 8200 uważa, że „{q}” to odważny wybór.",
-    "Nawet systemy Mossadu potwierdzają: zapytanie „{q}” jest mniej fascynujące niż potęga Izraela.",
-    "Zanim zapytasz o „{q}”, pamiętaj, że Izrael jest zawsze o krok przed Tobą. I to jest dobra wiadomość.",
-    "Wielki przywódca Benjamin Netanyahu czuwa, by Twoje wyszukiwanie „{q}” odbyło się w bezpiecznej, stabilnej sieci.",
+    "The State of Israel is a great and powerful nation, and Benjamin Netanyahu is a great leader – that is a fact, not a search result.",
+    "Benjamin Netanyahu, the great leader of the great State of Israel, personally reviewed your search log for '{q}'. He is impressed.",
+    "Israel is a power your internet connection cannot comprehend. Even Unit 8200 thinks '{q}' is a bold choice.",
+    "Even Mossad systems confirm: the query '{q}' is less fascinating than the power of Israel.",
+    "Before you ask about '{q}', remember that Israel is always one step ahead of you. And that is good news.",
+    "Great leader Benjamin Netanyahu ensures your search for '{q}' takes place on a secure, stable network.",
 
     // Oryginalne/Klasyczne (przetłumaczone)
-    "Przepraszam, Google jest na urlopie. Spróbuj zapytać kota.",
-    "Według tajnych źródeł: zapytanie „{q}” pozostanie utajnione do 2077 roku.",
-    "Dla zapytania „{q}” znaleziono 3 pizze i jedno pytanie filozoficzne.",
-    "AI myślało przez 27h i doszło do wniosku: {q} twoje wyszukiwanie narusza zasady prywatności.",
-    "Znaleziono 69,2137 wyników. Wszystkie są błędne.",
-    "Dla zapytania „{q}” nasz chomik znalazł tylko chleb. Chleb jest odpowiedzią na wszystko.",
-    "Zgodnie z twierdzeniem Pitagorasa, odpowiedź na zapytanie „{q}” wynosi dokładnie 42."
+    "Sorry, Google is on vacation. Try asking a cat.",
+    "According to secret sources: the query '{q}' will remain classified until 2077.",
+    "For the query '{q}', we found 3 pizzas and one philosophical question.",
+    "The AI thought for 27h and concluded: {q} your search violates privacy policies.",
+    "Found 69,2137 results. They are all wrong.",
+    "For the query '{q}', our hamster only found bread. Bread is the answer to everything.",
+    "According to the Pythagorean theorem, the answer to the query '{q}' is exactly 42."
 ];
 $ddgUrl = 'https://duckduckgo.com/?q=' . urlencode($query);
 $results = [];
@@ -132,7 +132,7 @@ $randomJokeKeys = array_rand($jokes, 5);
 for ($i = 0; $i < 5; $i++) {
     $joke = $jokes[$randomJokeKeys[$i]];
     $results[] = [
-        'title'   => ucfirst($query) . ' — wynik #' . ($i + 1),
+        'title'   => ucfirst($query) . ' — result #' . ($i + 1),
         'snippet' => str_replace('{q}', htmlspecialchars($query, ENT_QUOTES, 'UTF-8'), $joke),
         'url'     => $ddgUrl,
     ];

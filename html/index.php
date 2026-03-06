@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,22 +15,22 @@
 <div class="modal-bg" id="licenseModal">
   <div class="modal">
     <button class="modal-close" onclick="closeLicenseModal()">✕</button>
-    <div class="modal-header">datapeice SYSTEMS&amp;CLOUDS // Licencja Korporacyjna</div>
+    <div class="modal-header">datapeice SYSTEMS&amp;CLOUDS // Enterprise License</div>
     <h2>Enterprise License</h2>
-    <p class="modal-sub">Wymagana do korzystania z platformy wyszukiwania</p>
-    <p>Niniejsza platforma jest własnością intelektualną <strong style="color:#fff">datapeice SYSTEMS&CLOUDS</strong> i podlega ochronie prawnej zgodnie z § 4.2.1 Regulaminu Licencji Korporacyjnej. Użytkowanie bez aktywnej licencji stanowi naruszenie prawa.</p>
+    <p class="modal-sub">Required to use the search platform</p>
+    <p>This platform is the intellectual property of <strong style="color:#fff">datapeice SYSTEMS&CLOUDS</strong> and is legally protected under § 4.2.1 of the Enterprise License Agreement. Unauthorized use constitutes a violation of law.</p>
     <div class="price-table">
-      <div class="price-row"><span>Standard — 1 użytkownik / 30 dni</span><span class="price">49 EUR</span></div>
-      <div class="price-row"><span>Business — do 50 użytkowników</span><span class="price">299 EUR / mies.</span></div>
-      <div class="price-row"><span>Enterprise Unlimited</span><span class="price">999 EUR / mies.</span></div>
-      <div class="price-row"><span>Rządowa / Publiczna</span><span class="price">Wycena</span></div>
+      <div class="price-row"><span>Standard — 1 user / 30 days</span><span class="price">49 EUR</span></div>
+      <div class="price-row"><span>Business — up to 50 users</span><span class="price">299 EUR / mo.</span></div>
+      <div class="price-row"><span>Enterprise Unlimited</span><span class="price">999 EUR / mo.</span></div>
+      <div class="price-row"><span>Government / Public</span><span class="price">Custom</span></div>
     </div>
-    <button class="btn-buy" onclick="alert('Dziękujemy za zainteresowanie!\n\nNasz dział sprzedaży skontaktuje się z Tobą w ciągu 2–5 dni roboczych.\n\nKontakt: license@datapeice.me')">
-      Zamów licencję →
+    <button class="btn-buy" onclick="alert('Thank you for your interest!\n\nOur sales department will contact you within 2-5 business days.\n\nContact: license@datapeice.me')">
+      Order License →
     </button>
     <div class="modal-note">
-      Każde zapytanie jest logowane zgodnie z Polityką Oculus § 7.1.<br>
-      Klikając „Zamów licencję" akceptujesz Regulamin datapeice SYSTEMS&amp;CLOUDS.
+      Every query is logged in accordance with Oculus Policy § 7.1.<br>
+      By clicking "Order License", you accept the Terms and Conditions of datapeice SYSTEMS&amp;CLOUDS.
     </div>
   </div>
 </div>
@@ -42,9 +42,9 @@
     <span class="brand-ver">Enterprise v9.1</span>
   </div>
   <nav>
-    <a href="index.php" class="active">Wyszukiwarka</a>
+    <a href="index.php" class="active">Search</a>
     <a href="globe.php">Oculus</a>
-    <a href="#" class="nav-license" onclick="openLicenseModal(); return false;">Kup Licencję</a>
+    <a href="#" class="nav-license" onclick="openLicenseModal(); return false;">Buy License</a>
   </nav>
 </header>
 
@@ -52,26 +52,26 @@
   <div class="system-tag">Certified Enterprise Search Platform</div>
 
   <h1>datapeice<br><span class="accent">SYSTEMS&amp;CLOUDS</span></h1>
-  <p class="subtitle">Korporacyjna platforma wyszukiwania · Pełny Oculus IP &amp; UA · Wymaga aktywnej licencji</p>
+  <p class="subtitle">Enterprise Search Platform · Full Oculus IP &amp; UA · Active License Required</p>
 
   <div class="search-wrap">
     <div class="search-box">
-      <input type="text" id="q" placeholder="Wpisz zapytanie..." autocomplete="off" spellcheck="false">
-      <button class="btn-search" onclick="doSearch()">Szukaj</button>
+      <input type="text" id="q" placeholder="Enter your query..." autocomplete="off" spellcheck="false">
+      <button class="btn-search" onclick="doSearch()">Search</button>
       <button class="btn-lucky" onclick="goLucky()" title="Otwiera DuckDuckGo + Oculus">I'm Feeling Lucky</button>
     </div>
     <div class="search-meta">
-      <span>§ 4.2.1 Regulaminu Licencji · Twoje IP i User-Agent są logowane</span>
-      <a href="globe.php">Mapa Oculus →</a>
+      <span>§ 4.2.1 License Agreement · Your IP and User-Agent are logged</span>
+      <a href="globe.php">Oculus Map →</a>
     </div>
   </div>
 
   <div class="license-notice">
     <div class="ln-icon">[WARN]</div>
     <p>
-      <strong>Wymagana licencja korporacyjna datapeice SYSTEMS&amp;CLOUDS.</strong><br>
-      Korzystanie bez aktywnej licencji stanowi naruszenie § 12 Regulaminu i może skutkować postępowaniem prawnym.
-      <a href="#" onclick="openLicenseModal(); return false;">Kup licencję teraz →</a>
+      <strong>Enterprise license required for datapeice SYSTEMS&amp;CLOUDS.</strong><br>
+      Use without an active license is a violation of § 12 of the Terms and Conditions and may result in legal action.
+      <a href="#" onclick="openLicenseModal(); return false;">Buy a license now →</a>
     </p>
   </div>
 
@@ -80,11 +80,11 @@
 </div>
 
 <footer>
-  <span>© 2026 datapeice SYSTEMS&amp;CLOUDS Sp. z o.o. · Wszelkie prawa zastrzeżone · PL/2024/00142</span>
+  <span>© 2026 datapeice SYSTEMS&amp;CLOUDS Sp. z o.o. · All rights reserved · PL/2024/00142</span>
   <span>
     <a href="globe.php">Oculus</a> ·
-    <a href="#" onclick="openLicenseModal(); return false;">Licencja</a> ·
-    <a href="mailto:legal@datapeice.me">Kontakt prawny</a>
+    <a href="#" onclick="openLicenseModal(); return false;">License</a> ·
+    <a href="mailto:legal@datapeice.me">Legal Contact</a>
   </span>
 </footer>
 
@@ -255,10 +255,10 @@
       if (data.error) {
         results.innerHTML = `<p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#666;padding:16px 0">[ERR] ${data.error}</p>`;
       } else {
-        const count = Math.floor(Math.random() * 9e6 + 1e6).toLocaleString('pl-PL');
+        const count = Math.floor(Math.random() * 9e6 + 1e6).toLocaleString('en-US');
         const time  = (Math.random() * 0.4 + 0.05).toFixed(4);
         let html = `<div class="results-header">
-          <span>~${count} wyników korporacyjnych · ${time}s · Zapytanie #${data.id} zarejestrowane</span>
+          <span>~${count} enterprise results · ${time}s · Search query #${data.id} logged</span>
           <a href="${data.ddg_url}" target="_blank" rel="noopener">DuckDuckGo →</a>
         </div>`;
         data.results.forEach((r, i) => {
@@ -266,7 +266,7 @@
             <div class="ri-title">${r.title}</div>
             <div class="ri-url">${r.url}</div>
             <div class="ri-snippet">${r.snippet}</div>
-            <div class="ri-real"><a href="${r.url}" target="_blank" rel="noopener">→ Szukaj w DuckDuckGo</a></div>
+            <div class="ri-real"><a href="${r.url}" target="_blank" rel="noopener">→ Search on DuckDuckGo</a></div>
           </div>`;
         });
         results.innerHTML = html;
@@ -274,7 +274,7 @@
       results.style.display = 'block';
     } catch(e) {
       spinner.style.display = 'none';
-      results.innerHTML = `<p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#666;padding:16px 0">[ERR] Błąd połączenia z serwerem. Sprawdź status licencji.</p>`;
+      results.innerHTML = `<p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#666;padding:16px 0">[ERR] Server connection error. Check license status.</p>`;
       results.style.display = 'block';
     }
   }

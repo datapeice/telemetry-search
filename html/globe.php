@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -311,10 +311,10 @@ function showGroupTooltip(lg, cx, cy) {
   document.getElementById('tt-ip').textContent = 'IP: ' + (d.ip || '?');
   
   const qList = lg.queries.slice(0, 10).map(q => 
-    `<div class="tt-q-item"><div class="q">${esc(q.query)}</div><span class="time">${new Date(q.searched_at).toLocaleTimeString('pl-PL')}</span></div>`
+    `<div class="tt-q-item"><div class="q">${esc(q.query)}</div><span class="time">${new Date(q.searched_at).toLocaleTimeString('en-US')}</span></div>`
   ).join('');
   document.getElementById('tt-queries').innerHTML = qList + (lg.queries.length>10?'<div style="font-size:9px;color:#444;text-align:center;margin-top:4px">...</div>':'');
-  document.getElementById('tt-ua').textContent = [d.device_type, d.os].filter(Boolean).join(' · ');
+  document.getElementById('tt-ua').innerHTML = '<div style="color:#555;font-size:9px;margin-bottom:4px;text-transform:uppercase">Device Intelligence</div><div><strong>Type:</strong> ' + (d.device_type||'Unknown') + '</div><div><strong>OS:</strong> ' + (d.os||'Unknown') + '</div><div><strong>Hardware:</strong> ' + (d.device_model||'Generic') + '</div><div style="margin-top:4px;padding-top:4px;border-top:1px solid #111;color:#555;font-size:8px;word-break:break-all">' + (d.user_agent||'') + '</div>';
 
   const tip = document.getElementById('tooltip');
   tip.style.display = 'block';
@@ -424,7 +424,7 @@ function renderList(mappedData) {
     return `<div class="query-item${isActive?' active':''}" onclick="onListClick(${i})" id="qi-${i}">
       <div class="qi-query">${esc(d.query)}</div>
       <div class="qi-meta"><span class="loc">${esc([d.city,d.country].filter(Boolean).join(', ')||'—')}</span>
-      <span>${new Date(d.searched_at).toLocaleTimeString('pl-PL')}</span></div>
+      <span>${new Date(d.searched_at).toLocaleTimeString('en-US')}</span></div>
     </div>`;
   }).join('');
 }
