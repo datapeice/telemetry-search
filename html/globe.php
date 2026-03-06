@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Telemetry Map — datapeice SYSTEMS&CLOUDS</title>
+<title>datapeice Oculus</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -17,7 +17,7 @@ body{background:#0a0a0a;color:#fff;font-family:'IBM Plex Mono',monospace;overflo
 #topbar{position:fixed;top:0;left:0;right:0;height:48px;background:rgba(10,10,10,.92);border-bottom:1px solid #111;backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:50}
 .tb-left{display:flex;align-items:center;gap:20px}
 .tb-brand{font-size:12px;font-weight:600;letter-spacing:.08em;color:#fff;text-transform:uppercase}
-.tb-brand em{color:#8a9ba8;font-style:normal}
+.tb-brand em{color:#8a9ba8;font-style:normal;text-transform:lowercase}
 .tb-sep{width:1px;height:20px;background:#1a1a1a}
 .tb-status{font-size:10px;color:#3d5a66;letter-spacing:.06em;text-transform:uppercase}
 .tb-status .dot{display:inline-block;width:6px;height:6px;background:#4a8f6a;border-radius:50%;margin-right:6px;animation:blink 2s ease-in-out infinite}
@@ -68,14 +68,55 @@ body{background:#0a0a0a;color:#fff;font-family:'IBM Plex Mono',monospace;overflo
 #toggle-panel{position:fixed;top:58px;right:300px;z-index:45;background:rgba(0,0,0,.8);border:1px solid #111;border-right:none;color:#222;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 9px;cursor:pointer;transition:color .15s}
 #toggle-panel.ph{right:0;border-right:1px solid #111;border-left:none}
 #toggle-panel:hover{color:#666}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  #canvas-container { right: 0; }
+  #canvas-container.shifted { bottom: 300px; right: 0; }
+  
+  #topbar { 
+    flex-direction: column; 
+    height: auto; 
+    padding: 12px 16px; 
+    gap: 12px; 
+  }
+  .tb-left { 
+    flex-direction: column; 
+    width: 100%; 
+    gap: 6px; 
+  }
+  .tb-right { 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    gap: 12px; 
+    border-top: 1px solid #1a1a1a; 
+    padding-top: 12px; 
+  }
+  .tb-btn { 
+    flex: 1; 
+    justify-content: center; 
+    padding: 8px 0; 
+  }
+  .tb-sep { display: none; }
+  
+  #panel { width: 100%; top: auto; right: 0; bottom: 0; height: 300px; transform: translateY(300px); border-left: none; border-top: 1px solid #111; }
+  #panel.hidden { transform: translateY(300px); }
+  #panel.open { transform: translateY(0); }
+  
+  #toggle-panel { top: auto; bottom: 300px; right: 20px; font-size: 16px; padding: 10px 14px; border: 1px solid #111; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+  #toggle-panel.ph { bottom: 20px; }
+  
+  #tooltip { width: 90vw; left: 5vw !important; bottom: 20px; top: auto !important; position: fixed; transform: none !important; margin: 0; padding: 10px; }
+}
 </style>
 </head>
 <body>
-<div id="loading"><div class="load-bar"></div><div>Initializing telemetry · datapeice SYSTEMS&CLOUDS</div></div>
+<div id="loading"><div class="load-bar"></div><div>Initializing telemetry · datapeice Oculus</div></div>
 <div id="canvas-container"></div>
 <div id="topbar">
   <div class="tb-left">
-    <div class="tb-brand"><em>datapeice</em> SYSTEMS&amp;CLOUDS</div>
+    <div class="tb-brand"><em>datapeice</em> Oculus</div>
     <div class="tb-sep"></div>
     <div class="tb-status"><span class="dot"></span>Telemetry · Live</div>
     <div class="tb-sep"></div>
@@ -105,9 +146,9 @@ body{background:#0a0a0a;color:#fff;font-family:'IBM Plex Mono',monospace;overflo
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 <script>
-let panelOpen = true;
-const getW = () => window.innerWidth - (panelOpen ? 300 : 0);
-const H = () => window.innerHeight;
+let panelOpen = window.innerWidth > 768;
+const getW = () => window.innerWidth <= 768 ? window.innerWidth : window.innerWidth - (panelOpen ? 300 : 0);
+const H = () => window.innerWidth <= 768 ? window.innerHeight - (panelOpen ? 300 : 0) : window.innerHeight;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a0a); // solid single color background
@@ -257,13 +298,23 @@ function resetMarkerColors() {
 const raycaster = new THREE.Raycaster();
 const mouse2d = new THREE.Vector2(-9, -9);
 
-let isDragging = false, dragMoved = false, prevX = 0, prevY = 0;
+let isDragging = false, dragMoved = false, prevX = 0, prevY = 0, lastTouchDist = 0;
 renderer.domElement.addEventListener('mousedown', e => {
   isDragging = true; dragMoved = false; prevX = e.clientX; prevY = e.clientY;
 });
+renderer.domElement.addEventListener('touchstart', e => {
+  if(e.touches.length === 1) {
+    isDragging = true; dragMoved = false; prevX = e.touches[0].clientX; prevY = e.touches[0].clientY;
+  } else if (e.touches.length === 2) {
+    lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  }
+}, {passive: false});
+
 window.addEventListener('mouseup', () => { isDragging = false; });
-window.addEventListener('mousemove', e => {
-  const dx = e.clientX - prevX, dy = e.clientY - prevY;
+window.addEventListener('touchend', () => { isDragging = false; });
+
+function handleMove(clientX, clientY) {
+  const dx = clientX - prevX, dy = clientY - prevY;
   if (isDragging) {
     if (Math.abs(dx)>2 || Math.abs(dy)>2) dragMoved = true;
     if (!lockedOnKey) {
@@ -274,25 +325,42 @@ window.addEventListener('mousemove', e => {
       targetX = Math.max(-4.5, Math.min(4.5, targetX));
       targetY = Math.max(-1.8, Math.min(2.8, targetY));
     }
-    prevX = e.clientX; prevY = e.clientY;
+    prevX = clientX; prevY = clientY;
   }
   
   if (!isDragging || !dragMoved) {
-    mouse2d.x = (e.clientX/camW)*2-1;
-    mouse2d.y = -(e.clientY/H())*2+1;
+    mouse2d.x = (clientX/camW)*2-1;
+    mouse2d.y = -(clientY/H())*2+1;
     raycaster.setFromCamera(mouse2d, camera);
     const meshes = Object.values(locationGroups).map(g=>g.dot);
     const hits = raycaster.intersectObjects(meshes);
     if (hits.length > 0 && !lockedOnKey) {
       const key = hits[0].object.userData.key;
       highlightMarker(key);
-      showGroupTooltip(locationGroups[key], e.clientX+18, e.clientY-10);
+      showGroupTooltip(locationGroups[key], clientX+18, clientY-10);
     } else if (!lockedOnKey) {
       document.getElementById('tooltip').style.display='none';
       resetMarkerColors();
     }
   }
+}
+
+window.addEventListener('mousemove', e => {
+  handleMove(e.clientX, e.clientY);
 });
+renderer.domElement.addEventListener('touchmove', e => {
+  if (e.touches.length === 1) {
+    e.preventDefault(); 
+    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+  } else if (e.touches.length === 2) {
+    e.preventDefault();
+    const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    const delta = lastTouchDist - dist;
+    targetZ = Math.max(0.6, Math.min(3.5, targetZ + delta * 0.01));
+    lastTouchDist = dist;
+  }
+}, {passive: false});
+
 renderer.domElement.addEventListener('click', e => {
   if (dragMoved) return;
   mouse2d.x = (e.clientX/camW)*2-1;
@@ -366,11 +434,31 @@ window.addEventListener('resize', () => {
 
 function togglePanel() {
   panelOpen = !panelOpen;
-  document.getElementById('panel').classList.toggle('hidden');
+  const panel = document.getElementById('panel');
   const btn = document.getElementById('toggle-panel');
-  btn.style.right = panelOpen ? '300px' : '0';
-  btn.classList.toggle('ph', !panelOpen);
-  document.getElementById('canvas-container').style.right = panelOpen ? '300px' : '0';
+  const cc = document.getElementById('canvas-container');
+  
+  if (window.innerWidth <= 768) {
+    if (panelOpen) {
+      panel.classList.add('open');
+      panel.classList.remove('hidden');
+      btn.style.bottom = '300px';
+      btn.classList.remove('ph');
+      cc.classList.add('shifted');
+    } else {
+      panel.classList.remove('open');
+      panel.classList.add('hidden');
+      btn.style.bottom = '20px';
+      btn.classList.add('ph');
+      cc.classList.remove('shifted');
+    }
+  } else {
+    panel.classList.toggle('hidden', !panelOpen);
+    btn.style.right = panelOpen ? '300px' : '0';
+    btn.classList.toggle('ph', !panelOpen);
+    cc.style.right = panelOpen ? '300px' : '0';
+  }
+  
   setTimeout(()=>window.dispatchEvent(new Event('resize')), 250);
 }
 

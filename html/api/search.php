@@ -125,11 +125,15 @@ $jokes = [
 ];
 $ddgUrl = 'https://duckduckgo.com/?q=' . urlencode($query);
 $results = [];
+
+// Get 5 random, unique keys from the jokes array
+$randomJokeKeys = array_rand($jokes, 5);
+
 for ($i = 0; $i < 5; $i++) {
-    $joke = $jokes[array_rand($jokes)];
+    $joke = $jokes[$randomJokeKeys[$i]];
     $results[] = [
         'title'   => ucfirst($query) . ' — wynik #' . ($i + 1),
-        'snippet' => str_replace('{q}', $query, $joke),
+        'snippet' => str_replace('{q}', htmlspecialchars($query, ENT_QUOTES, 'UTF-8'), $joke),
         'url'     => $ddgUrl,
     ];
 }

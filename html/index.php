@@ -451,6 +451,64 @@
     letter-spacing: 0.03em;
     line-height: 1.8;
   }
+  
+  /* ── Mobile Responsive ── */
+  @media (max-width: 768px) {
+    header {
+      flex-direction: column;
+      height: auto;
+      padding: 16px;
+      gap: 12px;
+    }
+    .brand {
+      justify-content: center;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+    nav {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+    .hero {
+      padding: 40px 16px 30px;
+    }
+    .search-box {
+      flex-direction: column;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 16px;
+      border-bottom: 1px solid var(--border2);
+    }
+    .search-box button.btn-search,
+    .search-box button.btn-lucky {
+      width: 100%;
+      padding: 16px;
+      border-left: none;
+      border-bottom: 1px solid var(--border2);
+    }
+    .search-meta {
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+    }
+    .license-notice {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    footer {
+      flex-direction: column;
+      padding: 16px;
+      gap: 12px;
+      text-align: center;
+    }
+    .modal {
+      padding: 24px 16px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -486,7 +544,6 @@
   </div>
   <nav>
     <a href="index.php" class="active">Wyszukiwarka</a>
-    <a href="weather.php">Pogoda</a>
     <a href="globe.php">Globus Telemetrii</a>
     <a href="#" class="nav-license" onclick="openLicenseModal(); return false;">Kup Licencję</a>
   </nav>

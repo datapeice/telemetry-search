@@ -7,5 +7,8 @@ CREATE TABLE IF NOT EXISTS searches (
     lat NUMERIC(9,5),
     lon NUMERIC(9,5),
     user_agent TEXT,
+    device_type VARCHAR(64),
+    os VARCHAR(64),
+    device_model VARCHAR(64),
     searched_at TIMESTAMP DEFAULT NOW()
 );
