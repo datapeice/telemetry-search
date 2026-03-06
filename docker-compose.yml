@@ -1,0 +1,38 @@
+services:
+  web:
+    build: .
+    container_name: php_apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/var/www/html:Z
+      - ./apache/servername.conf:/etc/apache2/conf-enabled/servername.conf:ro,Z
+    environment:
+      DB_HOST: db
+      DB_NAME: searchdb
+      DB_USER: searchuser
+      DB_PASS: searchpass
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: searchdb
+      POSTGRES_USER: searchuser
+      POSTGRES_PASSWORD: searchpass
+    volumes:
+      - pgdata:/var/lib/postgresql/data:Z
+      - ./initdb:/docker-entrypoint-initdb.d:Z
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U searchuser -d searchdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:
