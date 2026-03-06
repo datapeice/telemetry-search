@@ -215,13 +215,38 @@ let lockedOnKey = null;
 let packets = []; // for animations
 
 function createPacketAnim(fromPos, toPos, isResponse) {
-  packets.push({
-    p1: fromPos, p2: toPos,
-    progress: 0,
-    mesh: new THREE.Mesh(new THREE.CircleGeometry(0.015, 8), new THREE.MeshBasicMaterial({ color: isResponse ? 0x4a8f6a : 0xffffff })),
-    isResponse: isResponse
+  const midX = (fromPos.x + toPos.x) / 2;
+  const midY = (fromPos.y + toPos.y) / 2;
+  const dist = fromPos.distanceTo(toPos);
+  const midZ = Math.max(0.2, dist * 0.3); // arch height based on distance
+  
+  const curve = new THREE.QuadraticBezierCurve3(
+    fromPos,
+    new THREE.Vector3(midX, midY, midZ),
+    toPos
+  );
+  
+  const pointsCount = 40;
+  const pts = curve.getPoints(pointsCount);
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  
+  // "радуга только цвет красный" -> Red line tail
+  const mat = new THREE.LineBasicMaterial({
+    color: 0xff1111, // strong red color for both directions
+    transparent: true,
+    opacity: 0.8,
+    linewidth: 2
   });
-  mapGroup.add(packets[packets.length-1].mesh);
+  
+  const line = new THREE.Line(geo, mat);
+  line.geometry.setDrawRange(0, 0);
+  
+  packets.push({
+    progress: 0,
+    mesh: line,
+    pointsCount: pointsCount + 1
+  });
+  mapGroup.add(line);
 }
 
 function processSearchRow(d, animate) {
@@ -406,17 +431,25 @@ function animate() {
   // Update packet anims
   for (let i=packets.length-1; i>=0; i--) {
     let p = packets[i];
-    p.progress += 0.02; // speed
-    if (p.progress >= 1) {
+    p.progress += 0.015; // smooth speed
+    if (p.progress >= 1.4) {
+      if (p.mesh.geometry) p.mesh.geometry.dispose();
+      if (p.mesh.material) p.mesh.material.dispose();
       mapGroup.remove(p.mesh);
       packets.splice(i, 1);
     } else {
-      // interpolation
-      let e = p.progress<.5 ? 2*p.progress*p.progress : -1+(4-2*p.progress)*p.progress; // easeInOut
-      p.mesh.position.x = p.p1.x + (p.p2.x - p.p1.x)*e;
-      p.mesh.position.y = p.p1.y + (p.p2.y - p.p1.y)*e;
-      // arch effect
-      p.mesh.position.z = 0.01 + Math.sin(e*Math.PI)*0.15;
+      let head = Math.floor(p.progress * p.pointsCount);
+      let tailLength = 15; // How long the curve line tail is
+      let tail = Math.max(0, head - tailLength);
+      
+      if (head > p.pointsCount) head = p.pointsCount;
+      
+      // fade out when reaching the end
+      if (p.progress > 1.0) {
+         p.mesh.material.opacity = 0.8 * (1.4 - p.progress) / 0.4;
+      }
+      
+      p.mesh.geometry.setDrawRange(tail, head - tail);
     }
   }
 
@@ -469,9 +502,14 @@ function buildList(data) {
 }
 function applyFilter() {
   const v = (document.getElementById('panel-filter').value || '').toLowerCase();
-  const f = v ? listData.map((d,i)=>({d,i})).filter(({d})=>
-    (d.query||'').toLowerCase().includes(v)||(d.city||'').toLowerCase().includes(v)
-  ) : listData.map((d,i)=>({d,i}));
+  let f = listData.map((d,i)=>({d,i})).filter(({d}) => 
+    d.query !== '[SITE VISIT]' && d.query !== '[PAGE LOAD]'
+  );
+  if (v) {
+    f = f.filter(({d})=>
+      (d.query||'').toLowerCase().includes(v)||(d.city||'').toLowerCase().includes(v)
+    );
+  }
   renderList(f);
 }
 function filterList() { applyFilter(); }

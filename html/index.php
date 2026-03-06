@@ -531,7 +531,7 @@
       Zamów licencję →
     </button>
     <div class="modal-note">
-      Każde zapytanie jest logowane zgodnie z Polityką Telemetrii § 7.1.<br>
+      Każde zapytanie jest logowane zgodnie z Polityką Oculus § 7.1.<br>
       Klikając „Zamów licencję" akceptujesz Regulamin datapeice SYSTEMS&amp;CLOUDS.
     </div>
   </div>
@@ -544,7 +544,7 @@
   </div>
   <nav>
     <a href="index.php" class="active">Wyszukiwarka</a>
-    <a href="globe.php">Globus Telemetrii</a>
+    <a href="globe.php">Oculus</a>
     <a href="#" class="nav-license" onclick="openLicenseModal(); return false;">Kup Licencję</a>
   </nav>
 </header>
@@ -553,17 +553,17 @@
   <div class="system-tag">Certified Enterprise Search Platform</div>
 
   <h1>datapeice<br><span class="accent">SYSTEMS&amp;CLOUDS</span></h1>
-  <p class="subtitle">Korporacyjna platforma wyszukiwania · Pełna telemetria IP &amp; UA · Wymaga aktywnej licencji</p>
+  <p class="subtitle">Korporacyjna platforma wyszukiwania · Pełny Oculus IP &amp; UA · Wymaga aktywnej licencji</p>
 
   <div class="search-wrap">
     <div class="search-box">
       <input type="text" id="q" placeholder="Wpisz zapytanie..." autocomplete="off" spellcheck="false">
       <button class="btn-search" onclick="doSearch()">Szukaj</button>
-      <button class="btn-lucky" onclick="goLucky()" title="Otwiera DuckDuckGo + globus telemetrii">I'm Feeling Lucky</button>
+      <button class="btn-lucky" onclick="goLucky()" title="Otwiera DuckDuckGo + Oculus">I'm Feeling Lucky</button>
     </div>
     <div class="search-meta">
       <span>§ 4.2.1 Regulaminu Licencji · Twoje IP i User-Agent są logowane</span>
-      <a href="globe.php">Mapa telemetrii →</a>
+      <a href="globe.php">Mapa Oculus →</a>
     </div>
   </div>
 
@@ -583,7 +583,7 @@
 <footer>
   <span>© 2026 datapeice SYSTEMS&amp;CLOUDS Sp. z o.o. · Wszelkie prawa zastrzeżone · PL/2024/00142</span>
   <span>
-    <a href="globe.php">Telemetria</a> ·
+    <a href="globe.php">Oculus</a> ·
     <a href="#" onclick="openLicenseModal(); return false;">Licencja</a> ·
     <a href="mailto:legal@datapeice.me">Kontakt prawny</a>
   </span>
