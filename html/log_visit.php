@@ -46,8 +46,14 @@ $ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $
 if (strpos($ip, ',') !== false) {
     $ip = trim(explode(',', $ip)[0]);
 }
+$ip = trim($ip);
 
-$isPublic = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+// Fallback for docker gateway IP during dev testing 
+if (strpos($ip, '172.') === 0 || strpos($ip, '192.168.') === 0 || strpos($ip, '10.') === 0) {
+    $isPublic = false;
+} else {
+    $isPublic = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+}
 if ($isPublic) {
     // Basic caching for IP coordinates to avoid spamming ip-api
     $geo = @file_get_contents("http://ip-api.com/json/{$ip}?fields=status,country,city,lat,lon");

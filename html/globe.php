@@ -218,11 +218,15 @@ function createPacketAnim(fromPos, toPos, isResponse) {
   const midX = (fromPos.x + toPos.x) / 2;
   const midY = (fromPos.y + toPos.y) / 2;
   const dist = fromPos.distanceTo(toPos);
-  const midZ = Math.max(0.2, dist * 0.3); // arch height based on distance
+  
+  // Create arc effect bending "up" (increasing Y) slightly, and "out" (increasing Z)
+  // This makes the trajectory appear convex and curved like a real flight path on a flat map
+  const archHeightY = dist * 0.15; // arc slightly northward
+  const midZ = Math.max(0.1, dist * 0.3); // curve outwards towards camera
   
   const curve = new THREE.QuadraticBezierCurve3(
     fromPos,
-    new THREE.Vector3(midX, midY, midZ),
+    new THREE.Vector3(midX, midY + archHeightY, midZ),
     toPos
   );
   
@@ -230,9 +234,8 @@ function createPacketAnim(fromPos, toPos, isResponse) {
   const pts = curve.getPoints(pointsCount);
   const geo = new THREE.BufferGeometry().setFromPoints(pts);
   
-  // "радуга только цвет красный" -> Red line tail
   const mat = new THREE.LineBasicMaterial({
-    color: 0xff1111, // strong red color for both directions
+    color: 0xff1111,
     transparent: true,
     opacity: 0.8,
     linewidth: 2
