@@ -110,6 +110,13 @@
     'izrael', 'tel awiw', 'jerozolima', 'syjon', 'syjonizm', 'cahal', 'mosad', 'szalom', 'hebrajski', 'kneset', 'hajfa', 'judaizm', 'żydzi', 'żyd', 'żydowskie'
   ];
 
+  // Preload easter egg resources
+  const preloadedImg = new Image();
+  preloadedImg.src = 'israel_img.webp';
+  const preloadedAudio = new Audio();
+  preloadedAudio.preload = 'auto';
+  preloadedAudio.src = 'israel.mp3';
+
   function checkEasterEggs(q) {
     if (israelTriggers.some(t => q.toLowerCase().includes(t)) && !easterEggActive) {
       easterEggActive = true;
@@ -121,7 +128,7 @@
       audioInstance.volume = 1.0;
       
       const img = document.createElement('img');
-      img.src = 'israel_img.png';
+      img.src = 'israel_img.webp';
       img.style.position = 'fixed';
       img.style.bottom = '0px';
       img.style.right = '40px';
