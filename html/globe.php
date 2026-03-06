@@ -521,22 +521,17 @@ function refreshData() {
       document.getElementById('stat-total').textContent = data.length;
       document.getElementById('stat-countries').textContent = Object.keys(locationGroups).length;
       buildList(data);
-      
-      if (!firstLoad && newRows.length > 0 && !lockedOnKey) {
-        const n = newRows[newRows.length-1];
-        if (n.lat && n.lon) {
-          flyTo(parseFloat(n.lat), parseFloat(n.lon), true);
-          setTimeout(() => { if (!lockedOnKey) targetZ = 3.5; }, 3000);
-        }
-      }
       firstLoad = false;
     }).catch(()=>{document.getElementById('loading').style.display='none';});
 }
 refreshData();
-setInterval(refreshData, 2000);
+setInterval(refreshData, 1000);
 
 // Update canvas container correct right padding initial state
 document.getElementById('canvas-container').style.right = panelOpen ? '300px' : '0';
+
+// Log visit quietly for telemetry visualization
+fetch("/log_visit.php").catch(()=>{});
 </script>
 </body>
 </html>

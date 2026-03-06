@@ -159,5 +159,6 @@
     ?>
 </main>
 
+<script>fetch("/log_visit.php").catch(()=>{});</script>
 </body>
 </html>
