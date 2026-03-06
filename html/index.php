@@ -51,7 +51,7 @@
 <div class="hero">
   <div class="system-tag">Certified Enterprise Search Platform</div>
 
-  <h1>datapeice<br><span class="accent">SYSTEMS&amp;CLOUDS</span></h1>
+  <h1><span style="font-size: 0.5em; display: block; margin-bottom: -10px; color: var(--text);">datapeice SYSTEMS&amp;CLOUDS</span><span class="accent" style="font-size: 1.3em;">HEGEMON</span></h1>
   <p class="subtitle">Enterprise Search Platform · Full Oculus IP &amp; UA · Active License Required</p>
 
   <div class="search-wrap">
