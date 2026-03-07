@@ -76,6 +76,15 @@
   </div>
 
   <div class="spinner" id="spinner"></div>
+
+  <div class="ai-container" id="ai-container">
+    <div class="ai-header-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Hegemon AI // Live Analysis
+    </div>
+    <div class="ai-text" id="ai-text"></div>
+  </div>
+
   <div id="results"></div>
 </div>
 
@@ -240,13 +249,15 @@
     if (!q) { openLicenseModal(); return; }
 
     checkEasterEggs(q);
-
+    streamAI(q); // Start AI analysis
+    
     const spinner = document.getElementById('spinner');
     const results = document.getElementById('results');
     spinner.style.display = 'block';
-    results.style.display = 'none';
+    results.style.display = 'block'; // ensure it shows early
     results.innerHTML = '';
-
+    // do not set display: 'none' to avoid vertical layout jumping
+    
     try {
       const res  = await fetch('/api/search.php?q=' + encodeURIComponent(q));
       const data = await res.json();
@@ -263,20 +274,67 @@
         </div>`;
         data.results.forEach((r, i) => {
           html += `<div class="result-item">
-            <div class="ri-title">${r.title}</div>
+            <div class="ri-title"><a href="${r.url}" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">${r.title}</a></div>
             <div class="ri-url">${r.url}</div>
             <div class="ri-snippet">${r.snippet}</div>
-            <div class="ri-real"><a href="${r.url}" target="_blank" rel="noopener">→ Search on DuckDuckGo</a></div>
           </div>`;
         });
         results.innerHTML = html;
       }
-      results.style.display = 'block';
     } catch(e) {
       spinner.style.display = 'none';
       results.innerHTML = `<p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#666;padding:16px 0">[ERR] Server connection error. Check license status.</p>`;
-      results.style.display = 'block';
     }
+  }
+
+  let aiEventSource = null;
+
+  function streamAI(q) {
+    if (aiEventSource) {
+      aiEventSource.close();
+    }
+    const aiBox = document.getElementById('ai-container');
+    const aiContent = document.getElementById('ai-text');
+    aiBox.style.display = 'block';
+    aiContent.innerHTML = '<span class="ai-loading">[SYSTEM] Initializing surveillance nodes & connecting to Hegemon AI...</span>';
+    
+    aiEventSource = new EventSource('/api/ai.php?q=' + encodeURIComponent(q));
+    let isFirst = true;
+    let fullText = "";
+
+    aiEventSource.onmessage = function(event) {
+      if (event.data === '[DONE]') {
+        aiEventSource.close();
+        return;
+      }
+      try {
+        const data = JSON.parse(event.data);
+        if (data.error) {
+            aiBox.style.display = 'none'; // hide if disabled or no key
+            aiEventSource.close();
+            return;
+        }
+        if (isFirst) {
+            aiContent.innerHTML = '';
+            isFirst = false;
+        }
+        if (data.text) {
+            fullText += data.text;
+            if (typeof marked !== 'undefined') {
+                aiContent.innerHTML = marked.parse(fullText);
+            } else {
+                let html = fullText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>');
+                aiContent.innerHTML = html.replace(/\n/g, '<br>');
+            }
+        }
+      } catch(e) {}
+    };
+
+    aiEventSource.onerror = function(err) {
+      aiEventSource.close();
+      if (isFirst) aiBox.style.display = 'none';
+    };
   }
 
   function goLucky() {
@@ -288,5 +346,6 @@
     window.open('globe.php', '_blank');
   }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>fetch("/log_visit.php").catch(()=>{});</script></body>
 </html>

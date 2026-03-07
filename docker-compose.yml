@@ -7,11 +7,14 @@ services:
     volumes:
       - ./html:/var/www/html:Z
       - ./apache/servername.conf:/etc/apache2/conf-enabled/servername.conf:ro,Z
+      - ./.env:/var/www/html/.env:ro,Z
     environment:
       DB_HOST: db
       DB_NAME: searchdb
       DB_USER: searchuser
       DB_PASS: searchpass
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy

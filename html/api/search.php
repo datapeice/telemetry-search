@@ -92,6 +92,24 @@ try {
     exit;
 }
 
+// Fetch from DuckDuckGo Lite version
+$apiUrl = "https://lite.duckduckgo.com/lite/";
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['q' => $query]));
+curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/x-www-form-urlencoded'
+]);
+curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$results = [];
+$count = 0;
+
 // Joke results
 $jokes = [
     // Sekcja: Inwigilacja i giganci zbrojeniowi (Lockheed, Anduril, Palantir)
@@ -123,19 +141,59 @@ $jokes = [
     "For the query '{q}', our hamster only found bread. Bread is the answer to everything.",
     "According to the Pythagorean theorem, the answer to the query '{q}' is exactly 42."
 ];
-$ddgUrl = 'https://duckduckgo.com/?q=' . urlencode($query);
-$results = [];
 
-// Get 5 random, unique keys from the jokes array
-$randomJokeKeys = array_rand($jokes, 5);
-
-for ($i = 0; $i < 5; $i++) {
-    $joke = $jokes[$randomJokeKeys[$i]];
-    $results[] = [
-        'title'   => ucfirst($query) . ' — result #' . ($i + 1),
-        'snippet' => str_replace('{q}', htmlspecialchars($query, ENT_QUOTES, 'UTF-8'), $joke),
-        'url'     => $ddgUrl,
-    ];
+// Extract DuckDuckGo HTML results
+if ($response) {
+    if (preg_match_all('/<a[^>]+href="([^"]+)"[^>]*class=[\"\']?result-link[\"\']?[^>]*>(.*?)<\/a>/is', $response, $matches)) {
+        for ($i = 0; $i < count($matches[0]); $i++) {
+            $href = trim($matches[1][$i]);
+            $title = strip_tags($matches[2][$i]);
+            
+            $joke = str_replace('{q}', htmlspecialchars($query, ENT_QUOTES, 'UTF-8'), $jokes[array_rand($jokes)]);
+            
+            $results[] = [
+                'title'   => html_entity_decode($title, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                'snippet' => $joke, // AI untouched, jokes applied
+                'url'     => $href,
+            ];
+            $count++;
+            if ($count >= 7) break;
+        }
+    }
 }
 
-echo json_encode(['id' => $id, 'query' => $query, 'results' => $results]);
+// Fallback to Wikipedia API if DuckDuckGo Instant Answers is empty
+if (empty($results)) {
+    $wikiUrl = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($query) . "&limit=5&format=json";
+    $wikiResp = @file_get_contents($wikiUrl);
+    $wikiData = $wikiResp ? json_decode($wikiResp, true) : null;
+    
+    if ($wikiData && !empty($wikiData[1])) {
+        foreach ($wikiData[1] as $idx => $wikiTitle) {
+            $joke = str_replace('{q}', htmlspecialchars($query, ENT_QUOTES, 'UTF-8'), $jokes[array_rand($jokes)]);
+            $results[] = [
+                'title'   => $wikiTitle,
+                'snippet' => $joke,
+                'url'     => $wikiData[3][$idx] ?? ('https://en.wikipedia.org/wiki/' . urlencode($wikiTitle))
+            ];
+        }
+    }
+}
+
+// Final fallback if both are empty
+if (empty($results)) {
+    // Fill with 5 random jokes leading to a real web search
+    $randomJokeKeys = array_rand($jokes, 5);
+    for ($i = 0; $i < 5; $i++) {
+        $joke = $jokes[$randomJokeKeys[$i]];
+        $results[] = [
+            'title'   => ucfirst($query) . ' — Official Website',
+            'snippet' => str_replace('{q}', htmlspecialchars($query, ENT_QUOTES, 'UTF-8'), $joke),
+            'url'     => 'https://duckduckgo.com/?q=' . urlencode($query . ' official site'),
+        ];
+    }
+}
+
+$ddgUrl = 'https://duckduckgo.com/?q=' . urlencode($query);
+
+echo json_encode(['id' => $id, 'query' => $query, 'results' => $results, 'ddg_url' => $ddgUrl]);
